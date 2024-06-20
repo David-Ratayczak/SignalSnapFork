@@ -9,7 +9,6 @@ import h5py
 import matplotlib.pyplot as plt
 import numpy as np
 import pickle
-from line_profiler import LineProfiler
 
 import arrayfire as af
 from arrayfire.arith import conjg as conj
@@ -1877,12 +1876,8 @@ class SpectrumCalculator:
         all_S_err = []
 
         for i in range(n_reps):
-            # f, S, S_err = self.calc_spec_poisson_one_spectrum(sigma_t=sigma_t,
-            #                                                   exp_weighting=exp_weighting, T_window=T_window)
-            lp = LineProfiler()
-            lp_wrapper = lp(self.calc_spec_poisson_one_spectrum)
-            f, S, S_err = lp_wrapper(sigma_t=sigma_t, exp_weighting=exp_weighting, T_window=T_window)
-            lp.print_stats()
+            f, S, S_err = self.calc_spec_poisson_one_spectrum(sigma_t=sigma_t,
+                                                              exp_weighting=exp_weighting, T_window=T_window)
 
             all_S.append(S)
             all_S_err.append(S_err)
