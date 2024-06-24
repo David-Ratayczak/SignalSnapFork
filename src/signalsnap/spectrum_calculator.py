@@ -2002,7 +2002,7 @@ class SpectrumCalculator:
 
         # zeros_on_gpu = to_gpu(1j * np.zeros_like(w_list))
         a_w_all = 0 * 1j * np.ones((w_list.shape[0], self.config.m))
-        a_w_all_to_gpu = a_w_all.reshape((len(f_list), 1, self.config.m), order='F')
+        a_w_all_gpu_copy = to_gpu(a_w_all.reshape((len(f_list), 1, self.config.m), order='F'))
 
         for frame_number in tqdm(range(n_windows)):
 
@@ -2024,7 +2024,9 @@ class SpectrumCalculator:
 
                 n_chunks += 1
 
-                a_w_all_gpu = to_gpu(a_w_all_to_gpu)
+                a_w_all_gpu = af.array.Array(a_w_all_gpu_copy)
+                # a_w_all = 0 * 1j * np.ones((w_list.shape[0], self.config.m))
+                # a_w_all_gpu = to_gpu(a_w_all.reshape((len(f_list), 1, self.config.m), order='F'))
 
                 for i, t_clicks in enumerate(frame):
 
